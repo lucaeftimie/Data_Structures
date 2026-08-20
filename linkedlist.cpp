@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 #include <iostream>
 
 
@@ -19,6 +20,24 @@
 // reverse list
 // concatenate lists
 
+=======
+#include<cstdlib>
+#include<stdio.h>
+// alocare celula
+// cautare element lista
+// inserare in lista
+//   1. la inceput
+//   2. la sf. listei
+//   3. in interior: dupa/inaintea unui element
+// eliminare element din lista
+// modificarea element
+// citire lista
+// distrugere lista
+// afisare lista
+// sortare lista
+// inversare lista
+// concatenare lista
+>>>>>>> Stashed changes
 typedef struct node {
     int data;
     struct  node *next;
@@ -180,7 +199,11 @@ void print_list(node** list) {
 
     for (p = *list; p != NULL; p = p->next)
         if (p->next == NULL)
+<<<<<<< Updated upstream
             printf("%d ", p->data);
+=======
+            printf("%d", p->data);
+>>>>>>> Stashed changes
         else
             printf("%d, ", p->data);
 
@@ -411,6 +434,107 @@ int reverse_list(node **list) {
 
     
 }
+
+int reverse_list(node **list) {
+    if (*list == NULL)
+        return -1;
+
+    // if (get_length(list)) {
+    //
+    // }
+    node *p_prev, *p, *p_next;
+    p_prev = *list;
+    p = (*list)->next;
+    p_next = p->next;
+
+    p_prev->next = NULL;
+    p->next = p_prev;
+
+    p_prev = p;
+    p = p_next;
+    p_next = p_next->next;
+
+    while (p != NULL) {
+
+        p->next = p_prev;
+        p_prev = p;
+        p = p_next;
+
+        if (p_next)
+            p_next = p_next->next;
+
+    }
+    *list = p_prev;
+    return 1;
+
+}
+
+// Takes the address of the head pointer as parameter
+int get_length(node **list) {
+    int count = 0;
+    node *p = *list;   // dereference to get the actual first node
+
+    while (p != NULL) {
+        count++;
+        p = p->next;
+    }
+
+    return count;
+}
+
+node* concatenate_lists(node **l1, node **l2, int l1_pos) {
+
+    node *head;
+
+    if (l1_pos <= 0 && l1_pos > get_length(l1)) {
+        return NULL;
+    }
+
+
+    // at the start of the list
+    if (l1_pos == -1) {
+
+        head = *l2;
+
+        while ((*l2)->next != NULL)
+            *l2 = (*l2)->next;
+
+        (*l2)->next = *l1;
+
+
+    }
+
+    if (l1_pos >= 0 && l1_pos < get_length(l1) - 1) {
+
+        head = *l1;
+
+        while (l1_pos > 0) {
+            (*l1) = (*l1)->next;
+            l1_pos--;
+        }
+
+        node *l1_next = (*l1)->next;
+        (*l1)->next = *l2;
+
+        while ((*l2)->next != NULL)
+            *l2 = (*l2)->next;
+
+        (*l2)->next = l1_next;
+    }
+    //inside the l2 list
+    //at the end of the l2 list
+    if (l1_pos == get_length(l1)) {
+
+        head = *l1;
+
+        while ((*l1)->next != NULL)
+            *l1 = (*l1)->next;
+
+        (*l1)->next = *l2;
+    }
+
+    return head;
+}
 int main() {
     // 10, 20, 105, 22, 43, 320
     // node* list = NULL;
@@ -431,6 +555,7 @@ int main() {
     // remove_node(&list, 3);
     // print_list(&list);
 
+<<<<<<< Updated upstream
     // node *list = NULL;
     // //read_list(&list, 6);
     // create_sorted_list(&list, 6);
@@ -447,6 +572,34 @@ int main() {
 
     print_list(&list);
     free_list(&list);
+=======
+    node* list1 = NULL;
+    create_node(&list1, 22);
+    add_node_at_the_front(&list1, 20);
+    add_node_before_ref(&list1, 105, 22 );
+    add_node_after_ref(&list1, 43, 22);
+    add_node_at_the_front(&list1, 10);
+    add_node_at_the_end(&list1, 320);
+
+    //reverse_list(&list1);
+    print_list(&list1);
+
+
+    node *list2 = NULL;
+    create_node(&list2, 1);
+    add_node_at_the_end(&list2, 2);
+    add_node_at_the_end(&list2, 3);
+    add_node_at_the_end(&list2, 4);
+    add_node_at_the_end(&list2, 5);
+    add_node_at_the_end(&list2, 6);
+    print_list(&list2);
+
+    //node * list3 = concatenate_lists(&list1, &list2, -1);
+    //node *list3 = concatenate_lists(&list1, &list2, 3);
+    node *list3 = concatenate_lists(&list1, &list2, 6);
+
+    print_list(&list3);
+>>>>>>> Stashed changes
 
     return 0;
 }
