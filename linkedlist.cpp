@@ -1,43 +1,5 @@
-<<<<<<< Updated upstream
 #include <iostream>
 
-
-// create node - done
-// add node - done
-//   1. front
-//   2. back
-//   3. inside
-// find element - done
-//get size of list - done
-// remove node - done
-// modify node - done
-// read list - done
-// print list - done
-// deallocate list - done
-// create sorted list - done
-// insert node sorted - done
-// sort list - done
-// reverse list
-// concatenate lists
-
-=======
-#include<cstdlib>
-#include<stdio.h>
-// alocare celula
-// cautare element lista
-// inserare in lista
-//   1. la inceput
-//   2. la sf. listei
-//   3. in interior: dupa/inaintea unui element
-// eliminare element din lista
-// modificarea element
-// citire lista
-// distrugere lista
-// afisare lista
-// sortare lista
-// inversare lista
-// concatenare lista
->>>>>>> Stashed changes
 typedef struct node {
     int data;
     struct  node *next;
