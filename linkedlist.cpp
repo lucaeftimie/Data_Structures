@@ -199,16 +199,11 @@ void print_list(node** list) {
 
     for (p = *list; p != NULL; p = p->next)
         if (p->next == NULL)
-<<<<<<< Updated upstream
             printf("%d ", p->data);
-=======
-            printf("%d", p->data);
->>>>>>> Stashed changes
         else
             printf("%d, ", p->data);
 
-
-    //printf("\n");
+    printf("\n");
 }
 
 
@@ -425,17 +420,6 @@ int sort_list(node **list) {
 }
 
 int reverse_list(node **list) {
-
-    if (*list == NULL)
-        return -1;
-
-    if (get_length(*list) == 1)
-        return -2;
-
-    
-}
-
-int reverse_list(node **list) {
     if (*list == NULL)
         return -1;
 
@@ -469,18 +453,6 @@ int reverse_list(node **list) {
 
 }
 
-// Takes the address of the head pointer as parameter
-int get_length(node **list) {
-    int count = 0;
-    node *p = *list;   // dereference to get the actual first node
-
-    while (p != NULL) {
-        count++;
-        p = p->next;
-    }
-
-    return count;
-}
 
 node* concatenate_lists(node **l1, node **l2, int l1_pos) {
 
@@ -555,7 +527,6 @@ int main() {
     // remove_node(&list, 3);
     // print_list(&list);
 
-<<<<<<< Updated upstream
     // node *list = NULL;
     // //read_list(&list, 6);
     // create_sorted_list(&list, 6);
@@ -572,7 +543,7 @@ int main() {
 
     print_list(&list);
     free_list(&list);
-=======
+
     node* list1 = NULL;
     create_node(&list1, 22);
     add_node_at_the_front(&list1, 20);
@@ -599,7 +570,6 @@ int main() {
     node *list3 = concatenate_lists(&list1, &list2, 6);
 
     print_list(&list3);
->>>>>>> Stashed changes
 
     return 0;
 }
