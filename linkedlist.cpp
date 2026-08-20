@@ -1,20 +1,24 @@
 #include <iostream>
 
 
-// alocare celula
-// cautare element lista
-// inserare in lista
-//   1. la inceput
-//   2. la sf. listei
-//   3. in interior: dupa/inaintea unui element
-// eliminare element din lista
-// modificarea element
-// citire lista
-// distrugere lista
-// afisare lista
-// sortare lista
-// inversare lista
-// concatenare lista
+// create node - done
+// add node - done
+//   1. front
+//   2. back
+//   3. inside
+// find element - done
+//get size of list - done
+// remove node - done
+// modify node - done
+// read list - done
+// print list - done
+// deallocate list - done
+// create sorted list - done
+// insert node sorted - done
+// sort list - done
+// reverse list
+// concatenate lists
+
 typedef struct node {
     int data;
     struct  node *next;
@@ -77,7 +81,7 @@ int add_node_before_ref(node** list, int data, int ref) {
        if (p->data == ref)
             break;
 
-        p_prev = p;
+       p_prev = p;
     }
     // When there is no node with "ref"
     if (p == NULL)
@@ -133,6 +137,7 @@ int add_node_at_the_end(node** list, int data) {
     for (p = *list; p->next != NULL; p = p->next);
 
     p->next = new_node;
+    new_node->next = NULL;
     return 1;
 }
 
@@ -156,32 +161,292 @@ int find_node(node** list, int data) {
         return index;
 }
 
+int get_length(node* list) {
+    if (list == NULL) {
+        return -1;
+    }
+
+    node *p;
+
+    int length = 0;
+    for (p = list; p != NULL; p = p->next)
+        length++;
+
+    return length;
+}
 
 void print_list(node** list) {
     node* p;
 
     for (p = *list; p != NULL; p = p->next)
-        printf("%d, ", p->data);
+        if (p->next == NULL)
+            printf("%d ", p->data);
+        else
+            printf("%d, ", p->data);
 
-    printf("\n");
+
+    //printf("\n");
+}
+
+
+int remove_node(node** list, int index) {
+
+    // If list is empty, there is nothing to remove
+    if (*list == NULL)
+        return -1;
+
+    // Get the length of the list
+    int len = get_length(*list);
+
+    // If length is larger than provided index => error
+    if (index > len)
+        return -2;
+
+    node *p = *list;
+    node *p_prev;
+
+    for (int i = 0; i < index; i++) {
+        p_prev = p;
+        p = p->next;
+    }
+
+    if (index == 0) {
+        *list = (*list)->next;
+    }
+
+    if (index > 0 && index < len) {
+        p_prev->next = p->next;
+        free(p);
+
+    }
+
+    if (index == len) {
+        p_prev->next = NULL;
+        free(p);
+    }
+
+    return 1;
+}
+
+int modify_node(node** list, int new_data, int index) {
+
+    // If list is empty, there is nothing to remove
+    if (*list == NULL)
+        return -1;
+
+    // Get the length of the list
+    int len = get_length(*list);
+
+    // If length is larger than provided index => error
+    if (index > len)
+        return -2;
+
+    node *p = *list;
+
+    for (int i = 0; i < index; i++)
+        p = p->next;
+
+    p->data = new_data;
+
+    return 1;
+}
+
+
+int read_list(node **new_list, int no_nodes) {
+    int data, check = 0;
+
+    if (no_nodes < 1)
+        return -1;
+
+    if (*new_list != NULL)
+        return -2;
+
+
+    for (int i = 0; i < no_nodes; i++) {
+        printf("Enter node %d:", i);
+        scanf(" %d", &data);
+
+        if (check == 0) {
+            create_node(new_list, data);
+            check = 1;
+        } else {
+            add_node_at_the_end(new_list, data);
+        }
+    }
+
+    return 1;
+}
+
+int free_list(node **list) {
+    node *p = *list, *aux_p;
+    int i = 0;
+    while (p != NULL){
+        aux_p = p->next;
+        free(p);
+        printf("Deallocated memory for the node %d\n", i++);
+        p = aux_p;
+    }
+
+    *list = NULL;
+
+    return 1;
+}
+
+int create_sorted_list(node** new_list, int no_nodes) {
+    int data, check = 0;
+
+    if (no_nodes < 1)
+        return -1;
+
+    if (*new_list != NULL)
+        return -2;
+
+    for (int i = 0; i < no_nodes; i++) {
+        printf("Enter node %d:", i);
+        scanf(" %d", &data);
+
+        if (check == 0) {
+            create_node(new_list, data);
+            check = 1;
+        }else {
+            node *p = *new_list;
+
+
+            if (p->data >= data) {
+                add_node_at_the_front(new_list, data);
+                print_list(new_list);
+            }else {
+                node *p_prev;
+                while (p != NULL && p->data <= data) {
+                    p_prev = p;
+                    p = p->next;
+                }
+
+                node *n;
+                create_node(&n, data);
+                p_prev->next = n;
+                n->next = p;
+                print_list(new_list);
+            }
+
+        }
+    }
+    return 1;
+}
+
+int add_node_sorted(node **list, int data) {
+
+    // If list is empty, create_node should be used
+    if (*list == NULL) {
+        return -1;
+    }
+
+    node *p = *list;
+    if (p->data >= data) {
+        add_node_at_the_front(list, data);
+    }else {
+        node *p_prev;
+        while (p != NULL && p->data <= data) {
+            p_prev = p;
+            p = p->next;
+        }
+
+        node *n;
+        create_node(&n, data);
+        p_prev->next = n;
+        n->next = p;
+    }
+
+    return 1;
+}
+
+int sort_list(node **list) {
+
+    if (*list == NULL) {
+        return -1;
+    }
+
+    if (get_length(*list) == 1)
+        return -2;
+
+    node *p = *list, *p_prev;
+
+    while (p != NULL && p->next != NULL) {
+
+        if (p->data > p->next->data ) {
+            if (p == *list) { // daca nodul de modificat este la inceputul listei
+                node *aux = p->next;
+                p->next = p->next->next;
+                aux->next = p;
+                *list = aux;
+            }else if (p->next->next == NULL) { // daca nodul de modificat este penultimul in lista
+
+                node *aux = p;
+                p_prev->next = p->next;
+                p->next->next = p;
+                p->next = NULL;
+            }else { // daca nodul de modificat se afla in interiorul listei
+                p_prev->next = p->next;
+                p->next = p->next->next;
+                p_prev->next->next = p;
+            }
+
+            p = *list;
+        }else {
+            p_prev = p;
+            p = p->next;
+        }
+    }
+
+    return 1;
+}
+
+int reverse_list(node **list) {
+
+    if (*list == NULL)
+        return -1;
+
+    if (get_length(*list) == 1)
+        return -2;
+
+    
 }
 int main() {
+    // 10, 20, 105, 22, 43, 320
+    // node* list = NULL;
+    // create_node(&list, 22);
+    // print_list(&list);
+    // add_node_at_the_front(&list, 20);
+    // print_list(&list);
+    // add_node_before_ref(&list, 105, 22 );
+    // print_list(&list);
+    // add_node_after_ref(&list, 43, 22);
+    // print_list(&list);
+    // add_node_at_the_front(&list, 10);
+    // print_list(&list);
+    // add_node_at_the_end(&list, 320);
+    // print_list(&list);
+    // remove_node(&list, 2);
+    // remove_node(&list, 0);
+    // remove_node(&list, 3);
+    // print_list(&list);
 
-    node* list = NULL;
-    create_node(&list, 22);
-    print_list(&list);
-    add_node_at_the_front(&list, 20);
-    print_list(&list);
-    add_node_before_ref(&list, 105, 22 );
-    print_list(&list);
-    add_node_after_ref(&list, 43, 22);
-    print_list(&list);
+    // node *list = NULL;
+    // //read_list(&list, 6);
+    // create_sorted_list(&list, 6);
+    // add_node_sorted(&list, 1);
+    // add_node_sorted(&list, 0);
+    // add_node_sorted(&list, 2);
+    // add_node_sorted(&list, 9);
+    // add_node_sorted(&list, 7);
+    // add_node_sorted(&list, 8);
 
-    add_node_at_the_front(&list, 10);
-    print_list(&list);
+    node *list = NULL;
+    read_list(&list, 9);
+    sort_list(&list);
 
-    add_node_at_the_end(&list, 320);
     print_list(&list);
+    free_list(&list);
 
     return 0;
 }
