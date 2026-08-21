@@ -1,4 +1,5 @@
-#include <iostream>
+#include <stdio.h>
+#include<malloc.h>
 
 typedef struct node {
     int data;
@@ -6,22 +7,24 @@ typedef struct node {
 }node;
 
 
+
 // Create a new node
 int create_node(node** list, int data) {
+
     node *new_node = (node*)malloc(sizeof(node));
-    if (!new_node)
-        return -1;
+
+    if (!new_node) return -1;
 
     new_node->data = data;
     new_node->next = NULL;
     *list = new_node;
+
     return 1;
 }
 
 //Create a node and add it after the node which contains the data from "ref"
 int add_node_after_ref(node** list, int data, int ref) {
 
-    // If list is empty, create_node should be used
     if (list == NULL) {
         return -1;
     }
@@ -44,7 +47,7 @@ int add_node_after_ref(node** list, int data, int ref) {
     new_node->next = p->next;
     p->next = new_node;
 
-    //Return value for succes
+    //Return value for success
     return 1;
 }
 
@@ -55,7 +58,7 @@ int add_node_before_ref(node** list, int data, int ref) {
         return -1;
     }
 
-    node* p, *p_prev;
+    node* p, *p_prev = NULL;
 
     for (p = *list; p != NULL; p = p->next) {
 
@@ -64,6 +67,7 @@ int add_node_before_ref(node** list, int data, int ref) {
 
        p_prev = p;
     }
+
     // When there is no node with "ref"
     if (p == NULL)
         return -1;
@@ -76,7 +80,7 @@ int add_node_before_ref(node** list, int data, int ref) {
     p_prev->next = new_node;
     new_node->next = p;
 
-    //Return value for succes
+    //Return value for success
     return 1;
 }
 
@@ -99,7 +103,7 @@ int add_node_at_the_front(node** list, int data) {
     new_node->next = *list;
     *list = new_node;
 
-    //Return value for succes
+    //Return value for success
     return 1;
 }
 
@@ -115,7 +119,7 @@ int add_node_at_the_end(node** list, int data) {
 
     node *p;
 
-    for (p = *list; p->next != NULL; p = p->next);
+    for (p = *list; p->next != NULL; p = p->next) {}
 
     p->next = new_node;
     new_node->next = NULL;
@@ -124,8 +128,8 @@ int add_node_at_the_end(node** list, int data) {
 
 // Returns the first node which is equal to "data"
 int find_node(node** list, int data) {
-    int index = 0;
-    int check = -1;
+    int index = 0, check = -1;
+
     for (node* p = *list; p != NULL; p = p->next) {
         if (p->data == data) {
             check = 1;
@@ -147,19 +151,19 @@ int get_length(node* list) {
         return -1;
     }
 
-    node *p;
+    node *p = list;
 
     int length = 0;
-    for (p = list; p != NULL; p = p->next)
+    for (; p != NULL; p = p->next)
         length++;
 
     return length;
 }
 
 void print_list(node** list) {
-    node* p;
+    node* p = *list;
 
-    for (p = *list; p != NULL; p = p->next)
+    for (; p != NULL; p = p->next)
         if (p->next == NULL)
             printf("%d ", p->data);
         else
@@ -244,7 +248,7 @@ int read_list(node **new_list, int no_nodes) {
 
     for (int i = 0; i < no_nodes; i++) {
         printf("Enter node %d:", i);
-        scanf(" %d", &data);
+        scanf("%d", &data);
 
         if (check == 0) {
             create_node(new_list, data);
@@ -258,6 +262,9 @@ int read_list(node **new_list, int no_nodes) {
 }
 
 int free_list(node **list) {
+    if (*list == NULL)
+        return -1;
+
     node *p = *list, *aux_p;
     int i = 0;
     while (p != NULL){
@@ -283,7 +290,7 @@ int create_sorted_list(node** new_list, int no_nodes) {
 
     for (int i = 0; i < no_nodes; i++) {
         printf("Enter node %d:", i);
-        scanf(" %d", &data);
+        scanf("%d", &data);
 
         if (check == 0) {
             create_node(new_list, data);
@@ -304,6 +311,7 @@ int create_sorted_list(node** new_list, int no_nodes) {
 
                 node *n;
                 create_node(&n, data);
+
                 p_prev->next = n;
                 n->next = p;
                 print_list(new_list);
@@ -354,18 +362,16 @@ int sort_list(node **list) {
     while (p != NULL && p->next != NULL) {
 
         if (p->data > p->next->data ) {
-            if (p == *list) { // daca nodul de modificat este la inceputul listei
+            if (p == *list) { // if the node to be modified is at the start of the list
                 node *aux = p->next;
                 p->next = p->next->next;
                 aux->next = p;
                 *list = aux;
-            }else if (p->next->next == NULL) { // daca nodul de modificat este penultimul in lista
-
-                node *aux = p;
+            }else if (p->next->next == NULL) { // if the node to be modified is second to last in the list
                 p_prev->next = p->next;
                 p->next->next = p;
                 p->next = NULL;
-            }else { // daca nodul de modificat se afla in interiorul listei
+            }else { // if the node to be modified is inside the list
                 p_prev->next = p->next;
                 p->next = p->next->next;
                 p_prev->next->next = p;
@@ -385,13 +391,10 @@ int reverse_list(node **list) {
     if (*list == NULL)
         return -1;
 
-    // if (get_length(list)) {
-    //
-    // }
-    node *p_prev, *p, *p_next;
-    p_prev = *list;
-    p = (*list)->next;
-    p_next = p->next;
+    if (get_length(*list) == 1)
+        return -2;
+
+    node *p_prev = *list, *p = (*list)->next, *p_next = p->next;
 
     p_prev->next = NULL;
     p->next = p_prev;
@@ -420,7 +423,7 @@ node* concatenate_lists(node **l1, node **l2, int l1_pos) {
 
     node *head;
 
-    if (l1_pos <= 0 && l1_pos > get_length(l1)) {
+    if (l1_pos <= 0 && l1_pos > get_length(*l1)) {
         return NULL;
     }
 
@@ -438,7 +441,7 @@ node* concatenate_lists(node **l1, node **l2, int l1_pos) {
 
     }
 
-    if (l1_pos >= 0 && l1_pos < get_length(l1) - 1) {
+    if (l1_pos >= 0 && l1_pos < get_length(*l1) - 1) {
 
         head = *l1;
 
@@ -457,7 +460,7 @@ node* concatenate_lists(node **l1, node **l2, int l1_pos) {
     }
     //inside the l2 list
     //at the end of the l2 list
-    if (l1_pos == get_length(l1)) {
+    if (l1_pos == get_length(*l1)) {
 
         head = *l1;
 
