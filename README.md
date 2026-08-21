@@ -7,8 +7,8 @@ Small C implementations of classic data structures, built with dynamically alloc
 | File | Description |
 |---|---|
 | `linkedlist.c` | A singly linked list supporting insertion (front, end, before/after a reference value, sorted), search, removal, sorting, reversal, and concatenating two lists. |
-| `queue.c` | A LIFO queue (`enqueue`/`dequeue`) built on a linked list with `front`/`rear` pointers and O(1) operations. |
-| `stack.c` | A FIFO stack (`push`/`pop`) built on a linked list. |
+| `queue.c` | A FIFO queue (`enqueue`/`dequeue`) built on a linked list with `front`/`rear` pointers and O(1) operations. |
+| `stack.c` | A LIFO stack (`push`/`pop`) built on a linked list. |
 
 Each file is self-contained and includes its own `main()` with example usage.
 
