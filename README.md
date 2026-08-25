@@ -39,6 +39,12 @@ Key operations:
 - `pop` — removes from the top
 - `isEmpty`
 
+## min_heap.c
+
+- `create_heap` / `free_heap`
+- `push` — adds a number according to the min-heap principle (each parent node is smaller or equal than its child nodes)
+- `pop` — removes the smallest number from the heap
+
 ## Build & run
 
 Each file can be compiled and run independently:
