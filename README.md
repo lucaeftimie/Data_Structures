@@ -9,6 +9,7 @@ Small C implementations of classic data structures, built with dynamically alloc
 | `linkedlist.c` | A singly linked list supporting insertion (front, end, before/after a reference value, sorted), search, removal, sorting, reversal, and concatenating two lists. |
 | `queue.c` | A FIFO queue (`enqueue`/`dequeue`) built on a linked list with `front`/`rear` pointers and O(1) operations. |
 | `stack.c` | A LIFO stack (`push`/`pop`) built on a linked list. |
+| `min_heap.c` | A priority queue (Min-Heap) flat array implementation guaranteeing O(log n) insertions and O(1) extractions. |
 
 Each file is self-contained and includes its own `main()` with example usage.
 
@@ -37,6 +38,12 @@ Key operations:
 - `push` — adds to the top
 - `pop` — removes from the top
 - `isEmpty`
+
+## min_heap.c
+
+- `create_heap` / `free_heap`
+- `push` — adds a number according to the min-heap principle (each parent node is smaller or equal than its child nodes)
+- `pop` — removes the smallest number from the heap
 
 ## Build & run
 
