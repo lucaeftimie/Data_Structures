@@ -17,6 +17,28 @@ typedef struct min_heap
 }min_heap;
 
 
+int get_parent(int i)
+{
+    return (i - 1) /2;
+}
+
+int get_left_child(int i)
+{
+    return (2 * i) + 1;
+}
+
+int get_right_child(int i)
+{
+    return (2 * i) + 2;
+}
+
+void swap(node **a, node **b)
+{
+    node *temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
 min_heap* create_heap(int capacity)
 {
     min_heap *new_heap = (min_heap*)malloc(sizeof(min_heap));
@@ -37,31 +59,9 @@ min_heap* create_heap(int capacity)
     return new_heap;
 }
 
-int get_parent(int i)
-{
-    return (i - 1) /2;
-}
-
-int get_left_child(int i)
-{
-    return (2 * i) + 1;
-}
-
-int get_right_child(int i)
-{
-    return (2 * i) + 2;
-}
-
-void swap(node *a, node *b)
-{
-    node temp = *a;
-    *a = *b;
-    *b = temp;
-}
-
 void push(min_heap* heap, node n) // heapify up method
 {
-    if (heap->size > heap->capacity)
+    if (heap->size == heap->capacity)
     {
         printf("Min heap is full.");
         return;
@@ -77,7 +77,7 @@ void push(min_heap* heap, node n) // heapify up method
 
     while (index != 0 && heap->array[get_parent(index)]->frequency > heap->array[index]->frequency)
     {
-        swap(heap->array[index], heap->array[get_parent(index)]);
+        swap(&heap->array[index], &heap->array[get_parent(index)]);
         index = get_parent(index);
     }
 }
@@ -88,8 +88,8 @@ node* pop(min_heap* heap) // heapify down method
         return NULL;
 
     node* root = heap->array[0];
-
-    heap->array[0] = heap->array[heap->size - 1];
+    swap(&heap->array[0], &heap->array[heap->size - 1]);
+    heap->size--;
 
     int index = 0;
 
@@ -107,23 +107,23 @@ node* pop(min_heap* heap) // heapify down method
         if (heap->array[index]->frequency <= heap->array[smallest]->frequency)
             break;
 
-        swap(heap->array[index], heap->array[smallest]);
+        swap(&heap->array[index], &heap->array[smallest]);
         index = smallest;
     }
 
     return root;
 }
 
-void heapify(node *arr, int i, int n)
+void heapify(node **arr, int i, int n)
 {
     int smallest = i;
     int l = 2 * i + 1;
     int r = 2 * i + 2;
 
-    if (l < n && arr[l].frequency < arr[smallest].frequency)
+    if (l < n && arr[l]->frequency < arr[smallest]->frequency)
         smallest = l;
 
-    if (r < n && arr[r].frequency < arr[smallest].frequency)
+    if (r < n && arr[r]->frequency < arr[smallest]->frequency)
         smallest = r;
 
     if (smallest != i)
