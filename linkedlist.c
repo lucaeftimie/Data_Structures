@@ -6,8 +6,6 @@ typedef struct node {
     struct  node *next;
 }node;
 
-
-
 // Create a new node
 int create_node(node** list, int data) {
 
